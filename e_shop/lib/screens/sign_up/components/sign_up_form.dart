@@ -39,11 +39,6 @@ class _SignUpFormState extends State<SignUpForm> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email!,
-          password: password!,
-        );
         // Navigate to OTP screen after successful sign-up
         Navigator.pushNamed(context, OtpScreen.routeName);
       } on FirebaseAuthException catch (e) {
