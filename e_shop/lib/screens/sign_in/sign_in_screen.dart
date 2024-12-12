@@ -16,7 +16,18 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
   bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
 
   Future<void> _signIn() async {
     if (_formKey.currentState!.validate()) {
@@ -30,7 +41,8 @@ class _SignInScreenState extends State<SignInScreen> {
           password: _passwordController.text.trim(),
         );
         // Navigate to the home page or desired screen
-        Navigator.pushReplacementNamed(context, '/home'); // Update with your route name
+        Navigator.pushReplacementNamed(
+            context, '/home'); // Update with your route name
       } on FirebaseAuthException catch (e) {
         String errorMessage;
         if (e.code == 'user-not-found') {
@@ -92,6 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: [
                     TextFormField(
                       controller: _emailController,
+                      focusNode: _emailFocusNode,
                       decoration: const InputDecoration(
                         labelText: "Email",
                         hintText: "Enter your email",
@@ -104,10 +117,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         }
                         return null;
                       },
+                      onTap: () {
+                        FocusScope.of(context).requestFocus(_emailFocusNode);
+                      },
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _passwordController,
+                      focusNode: _passwordFocusNode,
                       decoration: const InputDecoration(
                         labelText: "Password",
                         hintText: "Enter your password",
@@ -119,6 +136,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           return 'Please enter your password';
                         }
                         return null;
+                      },
+                      onTap: () {
+                        FocusScope.of(context).requestFocus(_passwordFocusNode);
                       },
                     ),
                     const SizedBox(height: 16),

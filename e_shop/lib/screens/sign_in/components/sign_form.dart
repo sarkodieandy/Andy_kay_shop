@@ -21,6 +21,15 @@ class _SignFormState extends State<SignForm> {
   bool? remember = false;
   final List<String?> errors = [];
   bool _isLoading = false;
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -91,6 +100,7 @@ class _SignFormState extends State<SignForm> {
       child: Column(
         children: [
           TextFormField(
+            focusNode: _emailFocusNode,
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
             onChanged: (value) {
@@ -117,9 +127,13 @@ class _SignFormState extends State<SignForm> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
+            onTap: () {
+              FocusScope.of(context).requestFocus(_emailFocusNode);
+            },
           ),
           const SizedBox(height: 20),
           TextFormField(
+            focusNode: _passwordFocusNode,
             obscureText: true,
             onSaved: (newValue) => password = newValue,
             onChanged: (value) {
@@ -146,6 +160,9 @@ class _SignFormState extends State<SignForm> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
             ),
+            onTap: () {
+              FocusScope.of(context).requestFocus(_passwordFocusNode);
+            },
           ),
           const SizedBox(height: 20),
           Row(
