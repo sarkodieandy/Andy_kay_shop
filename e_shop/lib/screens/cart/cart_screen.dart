@@ -64,7 +64,7 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const CheckoutCard(),
+      bottomNavigationBar: CheckoutCard(),
     );
   }
 }
