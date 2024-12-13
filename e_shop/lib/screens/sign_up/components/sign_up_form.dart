@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
-import '../../complete_profile/complete_profile_screen.dart';
+import '../../otp/otp_screen.dart'; // Import the OTP screen
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -35,33 +35,27 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
-  Future<void> signUp() async {
+  Future<void> signUpUser() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        // Register the user with Firebase Authentication
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        // UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email!,
           password: password!,
         );
-        // Check if the user is authenticated
-        User? user = userCredential.user;
-        if (user != null) {
-          // Successfully authenticated, navigate to the next screen
-          Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-        } else {
-          addError(error: 'User not authenticated');
-        }
+        // Navigate to OTP screen after successful sign-up
+        Navigator.pushNamed(context, OtpScreen.routeName);
       } on FirebaseAuthException catch (e) {
-        // Handle specific Firebase Auth errors
         if (e.code == 'weak-password') {
-          addError(error: 'The password is too weak.');
+          addError(error: "The password provided is too weak.");
         } else if (e.code == 'email-already-in-use') {
-          addError(error: 'The account already exists for that email.');
+          addError(error: "The account already exists for that email.");
+        } else {
+          addError(error: e.message);
         }
       } catch (e) {
-        // Handle general errors
-        addError(error: 'An error occurred. Please try again.');
+        addError(error: e.toString());
       }
     }
   }
@@ -72,7 +66,6 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
-          // Email Field
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
@@ -102,7 +95,6 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
-          // Password Field
           TextFormField(
             obscureText: true,
             onSaved: (newValue) => password = newValue,
@@ -135,7 +127,6 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
-          // Confirm Password Field
           TextFormField(
             obscureText: true,
             onSaved: (newValue) => confirmPassword = newValue,
@@ -170,7 +161,7 @@ class _SignUpFormState extends State<SignUpForm> {
           FormError(errors: errors),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: signUp,  // Call the Firebase sign-up function
+            onPressed: signUpUser,
             child: const Text("Continue"),
           ),
         ],
