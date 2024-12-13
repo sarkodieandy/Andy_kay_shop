@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
-import '../../complete_profile/complete_profile_screen.dart';
+import '../../otp/otp_screen.dart'; // Import the OTP screen
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -35,10 +35,11 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
-  Future<void> signUp() async {
+  Future<void> signUpUser() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
+<<<<<<< HEAD
 <<<<<<< HEAD
         // Navigate to OTP screen after successful sign-up
         Navigator.pushNamed(context, OtpScreen.routeName);
@@ -62,16 +63,25 @@ class _SignUpFormState extends State<SignUpForm> {
         } else {
           addError(error: 'User not authenticated');
         }
+=======
+        // UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email!,
+          password: password!,
+        );
+        // Navigate to OTP screen after successful sign-up
+        Navigator.pushNamed(context, OtpScreen.routeName);
+>>>>>>> d2b3531012abb7a2b5fb725c84112ea3e1044385
       } on FirebaseAuthException catch (e) {
-        // Handle specific Firebase Auth errors
         if (e.code == 'weak-password') {
-          addError(error: 'The password is too weak.');
+          addError(error: "The password provided is too weak.");
         } else if (e.code == 'email-already-in-use') {
-          addError(error: 'The account already exists for that email.');
+          addError(error: "The account already exists for that email.");
+        } else {
+          addError(error: e.message);
         }
       } catch (e) {
-        // Handle general errors
-        addError(error: 'An error occurred. Please try again.');
+        addError(error: e.toString());
       }
     }
   }
@@ -82,7 +92,6 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
-          // Email Field
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
@@ -112,7 +121,6 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
-          // Password Field
           TextFormField(
             obscureText: true,
             onSaved: (newValue) => password = newValue,
@@ -145,7 +153,6 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
-          // Confirm Password Field
           TextFormField(
             obscureText: true,
             onSaved: (newValue) => confirmPassword = newValue,
@@ -180,7 +187,7 @@ class _SignUpFormState extends State<SignUpForm> {
           FormError(errors: errors),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: signUp,  // Call the Firebase sign-up function
+            onPressed: signUpUser,
             child: const Text("Continue"),
           ),
         ],

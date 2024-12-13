@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../constants.dart';
-import '../sign_in/sign_in_screen.dart';
+import '../sign_in/sign_screen.dart';
 import 'components/splash_content.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,21 +13,32 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final PageController _pageController = PageController(); // Step 1: Add PageController
   int currentPage = 0;
+
   List<Map<String, String>> splashData = [
     {
-      "text": "Welcome to Gaf Shop, Let’s shop!",
-      "image": "assets/images/splash_1.png"
+      "text": "Welcome to GAF Shop! Your ultimate shopping destination.",
+      "image": "assets/images/splash_7.gif"
     },
     {
-      "text": "We help Soldiers conect with store \naround Ghana Armed Forces.",
-      "image": "assets/images/splash_2.png"
+      "text":
+          "Connecting soldiers to stores across the Ghana Armed Forces with ease.",
+      "image": "assets/images/splash_8.gif"
     },
     {
-      "text": "We show the easy way to shop. \nJust stay at home with us",
-      "image": "assets/images/splash_3.png"
-    },
+      "text":
+          "Experience stress-free shopping. \nRelax at home while we deliver to you.",
+      "image": "assets/images/splash_9.gif"
+    }
   ];
+
+  @override
+  void dispose() {
+    _pageController.dispose(); // Step 4: Dispose the PageController
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Expanded(
                 flex: 3,
                 child: PageView.builder(
+                  controller: _pageController, // Step 2: Add controller to PageView
                   onPageChanged: (value) {
                     setState(() {
                       currentPage = value;
@@ -47,13 +58,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   },
                   itemCount: splashData.length,
                   itemBuilder: (context, index) => SplashContent(
-                    image: splashData[index]["image"],
-                    text: splashData[index]['text'],
+                    image: AssetImage(splashData[index]["image"]!),
+                    text: splashData[index]['text']!,
                   ),
                 ),
               ),
               Expanded(
-                flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -65,24 +75,50 @@ class _SplashScreenState extends State<SplashScreen> {
                           splashData.length,
                           (index) => AnimatedContainer(
                             duration: kAnimationDuration,
-                            margin: const EdgeInsets.only(right: 5),
-                            height: 6,
-                            width: currentPage == index ? 20 : 6,
+                            margin: const EdgeInsets.only(right: 8),
+                            height: 8,
+                            width: currentPage == index ? 24 : 8,
                             decoration: BoxDecoration(
                               color: currentPage == index
                                   ? kPrimaryColor
                                   : const Color(0xFFD8D8D8),
-                              borderRadius: BorderRadius.circular(3),
+                              borderRadius: BorderRadius.circular(4),
                             ),
                           ),
                         ),
                       ),
-                      const Spacer(flex: 3),
+                      const Spacer(flex: 2),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 16, horizontal: 32),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          backgroundColor: kPrimaryColor,
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         onPressed: () {
-                          Navigator.pushNamed(context, SignInScreen.routeName);
+                          if (currentPage == splashData.length - 1) {
+                            // Navigate to Sign In screen
+                            Navigator.pushNamed(context, SignScreen.routeName);
+                          } else {
+                            // Step 3: Use PageController to move to next page
+                            _pageController.animateToPage(
+                              currentPage + 1,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
                         },
-                        child: const Text("Continue"),
+                        child: Text(
+                          currentPage == splashData.length - 1
+                              ? "Get Started"
+                              : "Next",
+                        ),
                       ),
                       const Spacer(),
                     ],
@@ -96,3 +132,4 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
