@@ -1,9 +1,11 @@
+import 'package:e_shop/screens/complete_profile/profile_provider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
 import '../../otp/otp_screen.dart';
+// Import the firebase function
 
 class CompleteProfileForm extends StatefulWidget {
   const CompleteProfileForm({super.key});
@@ -36,12 +38,37 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     }
   }
 
+  void saveUserProfile() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        // Call the Firebase function to save user profile data
+        await saveUserProfileData(
+          userId: user.uid,
+          firstName: firstName!,
+          lastName: lastName!,
+          phoneNumber: phoneNumber!,
+          address: address!,
+        );
+
+        // Navigate to the OTP screen
+        Navigator.pushNamed(context, OtpScreen.routeName);
+      } else {
+        // Handle error if user is not authenticated
+        print("User not authenticated");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
         children: [
+          // First Name field
           TextFormField(
             onSaved: (newValue) => firstName = newValue,
             onChanged: (value) {
@@ -60,25 +87,23 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               labelText: "First Name",
               hintText: "Enter your first name",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             ),
           ),
           const SizedBox(height: 20),
+          // Last Name field
           TextFormField(
             onSaved: (newValue) => lastName = newValue,
             decoration: const InputDecoration(
               labelText: "Last Name",
               hintText: "Enter your last name",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             ),
           ),
           const SizedBox(height: 20),
+          // Phone Number field
           TextFormField(
             keyboardType: TextInputType.phone,
             onSaved: (newValue) => phoneNumber = newValue,
@@ -98,13 +123,12 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               labelText: "Phone Number",
               hintText: "Enter your phone number",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
             ),
           ),
           const SizedBox(height: 20),
+          // Address field
           TextFormField(
             onSaved: (newValue) => address = newValue,
             onChanged: (value) {
@@ -123,8 +147,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               labelText: "Address",
               hintText: "Enter your address",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
@@ -132,12 +154,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           ),
           FormError(errors: errors),
           const SizedBox(height: 20),
+          // Continue button
           ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                Navigator.pushNamed(context, OtpScreen.routeName);
-              }
-            },
+            onPressed: saveUserProfile, // Call the function to save data
             child: const Text("Continue"),
           ),
         ],
