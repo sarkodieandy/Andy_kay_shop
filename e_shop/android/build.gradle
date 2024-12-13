@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+=======
 buildscript {
     repositories {
         google()
@@ -9,21 +12,32 @@ buildscript {
     }
 }
 
+>>>>>>> 9aa82b6783e9f582dd1f7e247e359cb49ec87a63
 allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter() // Optional: Only include if required for specific dependencies
     }
 }
 
 rootProject.buildDir = "../build"
+
+// Adjust the build directories for all subprojects
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
+// Ensure the ":app" project is evaluated before other subprojects
 subprojects {
-    project.evaluationDependsOn(":app")
+    afterEvaluate {
+        if (project.name != "app") {
+            evaluationDependsOn(":app")
+        }
+    }
 }
 
+// Register a clean task to delete the build directory
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
