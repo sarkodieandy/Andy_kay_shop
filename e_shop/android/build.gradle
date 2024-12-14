@@ -1,18 +1,7 @@
-<<<<<<< HEAD
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-=======
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.2'
-        classpath 'com.google.gms:google-services:4.3.15'
-    }
-}
+// Include all projects in the settings
+include ':app'
 
->>>>>>> 9aa82b6783e9f582dd1f7e247e359cb49ec87a63
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 allprojects {
     repositories {
         google()
