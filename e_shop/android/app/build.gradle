@@ -1,20 +1,114 @@
+// plugins {
+//     id "com.android.application"
+//     id "kotlin-android"
+//     id "com.google.gms.google-services" // Firebase configuration
+//     id "dev.flutter.flutter-gradle-plugin" // Flutter plugin
+
+// }
+
+// android {
+//     namespace = "com.example.e_shop"
+//     compileSdkVersion 34
+//     ndkVersion "25.1.8937393" // Ensure this matches your NDK version
+
+
+   
+//     compileOptions {
+//         sourceCompatibility = JavaVersion.VERSION_1_8
+//         targetCompatibility = JavaVersion.VERSION_1_8
+//     }
+
+//     kotlinOptions {
+//         jvmTarget = "1.8"
+//     }
+
+//     defaultConfig {
+//         applicationId = "com.example.e_shop"
+//         minSdkVersion 23
+//         targetSdkVersion 34
+//         versionCode 1
+//         versionName "1.0"
+
+//     }
+
+   
+
+//     kotlinOptions {
+//         jvmTarget = "1.8"
+//     }
+
+//     buildTypes {
+//         release {
+//             // Enable shrinking
+//             minifyEnabled true
+//             shrinkResources true
+
+//             // Use default ProGuard rules for optimizing
+//             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+
+//             // Use debug signing config temporarily (replace with release signing later)
+//             signingConfig signingConfigs.debug
+//         }
+//         debug {
+//             // Disable shrinking in debug builds
+//             minifyEnabled false
+//             shrinkResources false
+
+//             signingConfig signingConfigs.debug
+
+//         }
+//     }
+// }
+
+// flutter {
+//     source = "../.."
+// }
+
+// dependencies {
+//     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22"
+//     implementation platform('com.google.firebase:firebase-bom:32.1.1')
+//     implementation 'com.google.firebase:firebase-auth-ktx'
+//     implementation 'com.google.firebase:firebase-firestore-ktx'
+// }
+
+// apply plugin: 'com.google.gms.google-services'
+
+
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
+<<<<<<< HEAD
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+=======
 <<<<<<< HEAD
     id "com.google.gms.google-services" // Firebase configuration
     id "dev.flutter.flutter-gradle-plugin" // Flutter plugin
 =======
     id "com.google.gms.google-services"
+>>>>>>> 3466113715ba76a612c862e8c769e4884834165a
     id "dev.flutter.flutter-gradle-plugin"
 >>>>>>> 9aa82b6783e9f582dd1f7e247e359cb49ec87a63
 }
 
 android {
     namespace = "com.example.e_shop"
-    compileSdkVersion 34
-    ndkVersion "25.1.8937393" // Ensure this matches your NDK version
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+    ndkVersion "25.1.8937393"
 
+<<<<<<< HEAD
+    // compileOptions {
+    //     sourceCompatibility = JavaVersion.VERSION_1_8
+    //     targetCompatibility = JavaVersion.VERSION_1_8
+    // }
+
+    // kotlinOptions {
+    //     jvmTarget = JavaVersion.VERSION_1_8
+    // }
+=======
 <<<<<<< HEAD
     defaultConfig {
         applicationId = "com.example.e_shop" // Change to your unique application ID
@@ -23,17 +117,27 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 =======
+>>>>>>> 3466113715ba76a612c862e8c769e4884834165a
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = 17
     }
 
     defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.e_shop"
+<<<<<<< HEAD
+        // You can update the following values to match your application needs.
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        minSdk = 23
+        // minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+=======
         minSdkVersion 23
         targetSdkVersion 34
         versionCode 1
@@ -48,10 +152,16 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+>>>>>>> 3466113715ba76a612c862e8c769e4884834165a
     }
 
     buildTypes {
         release {
+<<<<<<< HEAD
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig = signingConfigs.debug
+=======
 <<<<<<< HEAD
             // Enable shrinking
             minifyEnabled true
@@ -62,6 +172,7 @@ android {
 
             // Use debug signing config temporarily (replace with release signing later)
             signingConfig signingConfigs.debug
+>>>>>>> 3466113715ba76a612c862e8c769e4884834165a
         }
         debug {
             // Disable shrinking in debug builds
@@ -77,6 +188,8 @@ android {
 flutter {
     source = "../.."
 }
+<<<<<<< HEAD
+=======
 
 <<<<<<< HEAD
 dependencies {
@@ -88,3 +201,4 @@ dependencies {
 =======
 apply plugin: 'com.google.gms.google-services'
 >>>>>>> 9aa82b6783e9f582dd1f7e247e359cb49ec87a63
+>>>>>>> 3466113715ba76a612c862e8c769e4884834165a
