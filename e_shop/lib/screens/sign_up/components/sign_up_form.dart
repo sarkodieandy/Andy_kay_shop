@@ -5,6 +5,7 @@ import '../../../components/form_error.dart';
 import '../../../constants.dart';
 import '../../otp/otp_screen.dart'; // Import the OTP screen
 
+
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
 
@@ -39,23 +40,30 @@ class _SignUpFormState extends State<SignUpForm> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        // UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        // Register the user with Firebase Authentication
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email!,
           password: password!,
         );
-        // Navigate to OTP screen after successful sign-up
-        Navigator.pushNamed(context, OtpScreen.routeName);
+
+        // Check if the user is authenticated
+        User? user = userCredential.user;
+        if (user != null) {
+          // Navigate to OTP screen after successful sign-up
+          Navigator.pushNamed(context, OtpScreen.routeName);
+        } else {
+          addError(error: "User authentication failed.");
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           addError(error: "The password provided is too weak.");
         } else if (e.code == 'email-already-in-use') {
           addError(error: "The account already exists for that email.");
         } else {
-          addError(error: e.message);
+          addError(error: "An unexpected error occurred: ${e.message}");
         }
       } catch (e) {
-        addError(error: e.toString());
+        addError(error: "An unexpected error occurred: $e");
       }
     }
   }
