@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
-import '../../otp/otp_screen.dart'; // Import the OTP screen
+import '../../complete_profile/complete_profile_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -35,22 +35,13 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
-  Future<void> signUpUser() async {
+  Future<void> signUp() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-<<<<<<< HEAD
-<<<<<<< HEAD
-        // Navigate to OTP screen after successful sign-up
-        Navigator.pushNamed(context, OtpScreen.routeName);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          addError(error: "The password provided is too weak.");
-        } else if (e.code == 'email-already-in-use') {
-          addError(error: "The account already exists for that email.");
-=======
         // Register the user with Firebase Authentication
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email!,
           password: password!,
         );
@@ -59,20 +50,9 @@ class _SignUpFormState extends State<SignUpForm> {
         if (user != null) {
           // Successfully authenticated, navigate to the next screen
           Navigator.pushNamed(context, CompleteProfileScreen.routeName);
->>>>>>> 9aa82b6783e9f582dd1f7e247e359cb49ec87a63
-        } else {
-          addError(error: 'User not authenticated');
         }
-=======
-        // UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email!,
-          password: password!,
-        );
-        // Navigate to OTP screen after successful sign-up
-        Navigator.pushNamed(context, OtpScreen.routeName);
->>>>>>> d2b3531012abb7a2b5fb725c84112ea3e1044385
       } on FirebaseAuthException catch (e) {
+        // Handle specific Firebase Auth errors
         if (e.code == 'weak-password') {
           addError(error: "The password provided is too weak.");
         } else if (e.code == 'email-already-in-use') {
@@ -81,7 +61,8 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: e.message);
         }
       } catch (e) {
-        addError(error: e.toString());
+        // Handle general errors
+        addError(error: 'An error occurred. Please try again.');
       }
     }
   }
@@ -92,6 +73,7 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
+          // Email Field
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
@@ -121,6 +103,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
+          // Password Field
           TextFormField(
             obscureText: true,
             onSaved: (newValue) => password = newValue,
@@ -153,6 +136,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           const SizedBox(height: 20),
+          // Confirm Password Field
           TextFormField(
             obscureText: true,
             onSaved: (newValue) => confirmPassword = newValue,
@@ -187,7 +171,7 @@ class _SignUpFormState extends State<SignUpForm> {
           FormError(errors: errors),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: signUpUser,
+            onPressed: signUp, // Call the Firebase sign-up function
             child: const Text("Continue"),
           ),
         ],
