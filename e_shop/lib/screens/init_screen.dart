@@ -31,7 +31,7 @@ class _InitScreenState extends State<InitScreen> {
     const Center(
       child: Text("Chat"),
     ),
-    const ProfileScreen()
+    const ProfileScreen(),
   ];
 
   @override
@@ -111,7 +111,7 @@ class _InitScreenState extends State<InitScreen> {
                 BlendMode.srcIn,
               ),
             ),
-            label: "Fav",
+            label: "Profile",
           ),
         ],
       ),

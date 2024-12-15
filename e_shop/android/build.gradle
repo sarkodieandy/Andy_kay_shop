@@ -1,6 +1,6 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+// <<<<<<< HEAD
+// =======
+// <<<<<<< HEAD
 
 // // // buildscript {
 // // //     repositories {
@@ -97,15 +97,15 @@
 // }
 
 // flutter {
-//     source = "../.."
-// }
-=======
-// Include all projects in the settings
-include ':app'
->>>>>>> 3466113715ba76a612c862e8c769e4884834165a
+// //     source = "../.."
+// // }
+// =======
+// // Include all projects in the settings
+// include ':app'
+// >>>>>>> 3466113715ba76a612c862e8c769e4884834165a
 
->>>>>>> 2ef8d2e285c9fb020f324c471956aaf8cfd8f083
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// >>>>>>> 2ef8d2e285c9fb020f324c471956aaf8cfd8f083
+// // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     repositories {
